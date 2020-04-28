@@ -8,9 +8,10 @@ import React, { Component } from 'react'
 // emptyMessage: message displayed when items list is empty, disables message when string is empty
 // emptyClass: string of Bootstrap classnames given to empty message, defaults to "alert alert-danger" when missing
 // showRowHeader: enables or disables automatically numbering rows from 1 to n
+// columnsOmmited: string of column headers seperated by spaces that you would like to omit from the table
 
 // usage:
-// <GeneralTable items={[*]} tableClass="*" emptyMessage="*" emptyClass="*" showRowHeader={*true,false*} />
+// <GeneralTable items={[*]} tableClass="*" emptyMessage="*" emptyClass="*" showRowHeader={*true,false*} columnsOmitted="* * etc"/>
 
 // my use:
 /*
@@ -24,6 +25,10 @@ import React, { Component } from 'react'
 */
 
 export class GeneralTable extends Component {
+
+    state = {
+        columnsOmitted: this.props.columnsOmitted.split(" ")
+    }
 
     render() {
         if (!this.props.items[0]) {
@@ -40,12 +45,12 @@ export class GeneralTable extends Component {
                         <thead className="thead-light">
                             <tr>
                                 {
-                                    this.props.showRowHeader &&
+                                    this.props.showRowHeader && 
                                     <th scope="col">#</th>
                                 }
                                 {
                                     Object.entries(this.props.items[0]).map(([key, value], j) =>
-                                        <th scope="col" key={j}>{key}</th>
+                                        !this.state.columnsOmitted.includes(key) && <th scope="col" key={j}>{key}</th>
                                     )
                                 }
                             </tr>
@@ -60,7 +65,7 @@ export class GeneralTable extends Component {
                                         }
                                         {
                                             Object.entries(item).map(([key, value], j) =>
-                                                <td key={j}>{value}</td>
+                                                !this.state.columnsOmitted.includes(key) && <td key={j}>{value}</td>
                                             )
                                         }
                                     </tr>

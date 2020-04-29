@@ -104,7 +104,7 @@ app.post('/inventory', (req, res) => {
 //GET ENTIRE INVENTORY LIST
 app.get('/inventory', (req, res) => {
 
-	connection.query("select * from inventory", function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory", function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -193,7 +193,7 @@ app.get('/warehouseprofile', function (req, res) {
 app.get('/customers', function (req, res) {
   connection.query("SELECT * FROM customers", function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for customers");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -210,9 +210,9 @@ app.get('/customers', function (req, res) {
 //RETURNS INFORMATION FOR A SPECIFIC CUSTOMER
 app.get('/customer', (req, res) => {
   var customerID = req.param('customerID');
-	connection.query("SELECT firstName, lastName, email, phoneNumber, address, city, zipcode, state FROM customers WHERE customerID = ?", customerID, function (err, rows, fields) {
+	connection.query("SELECT firstName as first, lastName as last, email as email, phoneNumber as phone, address, city, zipcode, state FROM customers WHERE customerID = ?", customerID, function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for Customers");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -227,7 +227,7 @@ app.get('/customer', (req, res) => {
 });
 
 //ROUTES FOR SEARCH FILTERS
-//SEARCH FOR ITEM NAME
+//SEARCH FOR ITEM NAME OR KEYWORD
 app.get('/search', (req, res) => {
   var search = req.param('search');
 	connection.query("SELECT * FROM inventory WHERE itemName LIKE ? OR itemDescription LIKE ? OR itemType LIKE ?", ['%' + search + '%','%' + search + '%','%' + search + '%'], function (err, rows, fields) {
@@ -249,7 +249,7 @@ app.get('/search', (req, res) => {
 //RETURNS ITEMS THAT NEED TO BE RESTOCKED
 app.get('/restock', (req, res) => {
 
-	connection.query("select itemID,itemName, numInStock from inventory WHERE numInStock < 5", function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID',itemName as 'Name', numInStock 'Quantity in Stock' from inventory WHERE numInStock < 5", function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -268,7 +268,7 @@ app.get('/restock', (req, res) => {
 //RETURNS INVENTORY FROM PRICE:LOW TO HIGH
 app.get('/priceasc', (req, res) => {
 
-	connection.query("select * from inventory ORDER BY price", function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory ORDER BY price", function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -287,7 +287,7 @@ app.get('/priceasc', (req, res) => {
 //RETURNS INVENTORY FROM PRICE:HIGH TO LOW
 app.get('/pricedesc', (req, res) => {
 
-	connection.query("select * from inventory ORDER BY price DESC", function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory ORDER BY price DESC", function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -306,7 +306,7 @@ app.get('/pricedesc', (req, res) => {
 //RETURNS ALL FAMILY SAFE ITEMS
 app.get('/familysafe', (req, res) => {
 
-	connection.query("select * from inventory WHERE familySafe = 'yes'", function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory WHERE familySafe = 'yes'", function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -325,7 +325,7 @@ app.get('/familysafe', (req, res) => {
 //RETURNS ALL ITEMS THAT CAN BE PACKAGED
 app.get('/package', (req, res) => {
 
-	connection.query("select * from inventory WHERE availableToPackage = 'yes'", function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory WHERE availableToPackage = 'yes'", function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -344,7 +344,7 @@ app.get('/package', (req, res) => {
 //RETURNS INVENTORY FROM A SPECIFIC CATEGORY
 app.get('/category', (req, res) => {
   var itemType = req.param('itemType');
-	connection.query("select * from inventory WHERE itemType = ?", itemType,function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory WHERE itemType = ?", itemType,function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -362,7 +362,7 @@ app.get('/category', (req, res) => {
 
 //RETURNS A LIST OF ORDERS FROM MOST RECENT TO LEAST RECENT
 app.get('/orders', (req, res) => {
-	connection.query("select  o.orderID, LEFT(o.orderDate,10) as Date, o.customerID, concat(c.firstName,' ', c.lastName) as Name from orders o INNER JOIN customers c ON o.customerID=c.customerID ORDER BY o.orderDate DESC",function (err, rows, fields) {
+	connection.query("select  o.orderID, LEFT(o.orderDate,10) as 'Order Date', o.customerID, concat(c.firstName,' ', c.lastName) as 'Customer Name' from orders o INNER JOIN customers c ON o.customerID=c.customerID ORDER BY o.orderDate DESC",function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -381,7 +381,7 @@ app.get('/orders', (req, res) => {
 //RETURNS ORDER DETAILS FOR A SPECIFIC ORDER
 app.get('/orderDetails', (req, res) => {
   var orderID = req.param('orderID');
-	connection.query("SELECT od.itemID, i.itemName as Item, od.quantity as Quantity FROM orderDetails od INNER JOIN inventory i ON od.itemID = i.itemID WHERE orderID = ?", orderID, function (err, rows, fields) {
+	connection.query("SELECT od.itemID as 'Item ID', i.itemName as Item, od.quantity as Quantity FROM orderDetails od INNER JOIN inventory i ON od.itemID = i.itemID WHERE orderID = ?", orderID, function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for inventory");
       res.status(400).json({
@@ -419,7 +419,6 @@ app.post('/orderDetails', function (req, res) {
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
-
 
 //update the numInStock of the inventory after an order is placed
 app.put('/subtractInventory', function (req, res) {

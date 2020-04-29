@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+//Create a new user
+
 export class NewUser extends React.Component {
-  //should start with values of what is currently in the table
+
   state = {
     username: '',
     first: '',

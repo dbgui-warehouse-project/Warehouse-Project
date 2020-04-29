@@ -49,7 +49,7 @@ app.get('/users', (req, res) => {
 	var user = req.param('user');
 	connection.query('SELECT passwd FROM `db`.`users` WHERE username = ?', user, function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query again");
+      logger.error("Error while executing query for users");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -141,7 +141,7 @@ app.get('/item', (req, res) => {
   var itemID = req.param('itemID');
 	connection.query("SELECT * FROM inventory WHERE itemID = ?", itemID, function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for item");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -175,7 +175,7 @@ app.put('/warehouseprofile', function (req, res) {
 app.get('/warehouseprofile', function (req, res) {
   connection.query("SELECT * FROM warehouseProfile", function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for warehouseProfile");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -212,7 +212,7 @@ app.get('/customer', (req, res) => {
   var customerID = req.param('customerID');
 	connection.query("SELECT firstName as first, lastName as last, email as email, phoneNumber as phone, address, city, zipcode, state FROM customers WHERE customerID = ?", customerID, function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for Customers");
+      logger.error("Error while executing Query for customer");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -232,7 +232,7 @@ app.get('/search', (req, res) => {
   var search = req.param('search');
 	connection.query("SELECT * FROM inventory WHERE itemName LIKE ? OR itemDescription LIKE ? OR itemType LIKE ?", ['%' + search + '%','%' + search + '%','%' + search + '%'], function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for search");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -251,7 +251,7 @@ app.get('/restock', (req, res) => {
 
 	connection.query("select itemID as 'Item ID',itemName as 'Name', numInStock 'Quantity in Stock' from inventory WHERE numInStock < 5", function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for restock");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -270,7 +270,7 @@ app.get('/priceasc', (req, res) => {
 
 	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory ORDER BY price", function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for priceasc");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -289,7 +289,7 @@ app.get('/pricedesc', (req, res) => {
 
 	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory ORDER BY price DESC", function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for pricedesc");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -308,7 +308,7 @@ app.get('/familysafe', (req, res) => {
 
 	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory WHERE familySafe = 'yes'", function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for familysafe");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -327,7 +327,7 @@ app.get('/package', (req, res) => {
 
 	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory WHERE availableToPackage = 'yes'", function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for package");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -346,7 +346,7 @@ app.get('/category', (req, res) => {
   var itemType = req.param('itemType');
 	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory WHERE itemType = ?", itemType,function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for category");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -364,7 +364,7 @@ app.get('/category', (req, res) => {
 app.get('/orders', (req, res) => {
 	connection.query("select  o.orderID, LEFT(o.orderDate,10) as 'Order Date', o.customerID, concat(c.firstName,' ', c.lastName) as 'Customer Name' from orders o INNER JOIN customers c ON o.customerID=c.customerID ORDER BY o.orderDate DESC",function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for orders");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"
@@ -383,7 +383,7 @@ app.get('/orderDetails', (req, res) => {
   var orderID = req.param('orderID');
 	connection.query("SELECT od.itemID as 'Item ID', i.itemName as Item, od.quantity as Quantity FROM orderDetails od INNER JOIN inventory i ON od.itemID = i.itemID WHERE orderID = ?", orderID, function (err, rows, fields) {
     if (err) {
-      logger.error("Error while executing Query for inventory");
+      logger.error("Error while executing Query for orderdetails");
       res.status(400).json({
         "data": [],
         "error": "MySQL error"

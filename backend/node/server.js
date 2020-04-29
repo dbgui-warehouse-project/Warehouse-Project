@@ -230,7 +230,7 @@ app.get('/customer', (req, res) => {
 //SEARCH FOR ITEM NAME OR KEYWORD
 app.get('/search', (req, res) => {
   var search = req.param('search');
-	connection.query("SELECT * FROM inventory WHERE itemName LIKE ? OR itemDescription LIKE ? OR itemType LIKE ?", ['%' + search + '%','%' + search + '%','%' + search + '%'], function (err, rows, fields) {
+	connection.query("select itemID as 'Item ID', itemName as 'Name', itemDescription as 'Description', numInStock as 'Quantity in Stock', itemType as 'Category',price as 'Price', familySafe as 'Family Safe', availableToPackage as 'Packageable' from inventory WHERE itemName LIKE ? OR itemDescription LIKE ? OR itemType LIKE ?", ['%' + search + '%','%' + search + '%','%' + search + '%'], function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query for search");
       res.status(400).json({

@@ -58,21 +58,22 @@ CREATE table IF NOT EXISTS `db`.`inventory` (
 `price` decimal(10,2) DEFAULT 0,
 `itemType` varchar(30) NOT NULL,
 `familySafe` varchar(10),
-`availableToPackage` varchar(10)
+`availableToPackage` varchar(10),
+timeToAssemble int
 );
 
 INSERT INTO `db`.`inventory` (`itemName`, `itemDescription`, `numInStock`, `price`, `itemType`, `familySafe`, `availableToPackage`) VALUES
-('Kellway 3 Piece Sofa','White leather, includes 2 corner wedge pieces and one armless chair',10,804,'Living Room', 'yes','no'),
-('Olsberg Sofa','Grey upholstery with reversible seat cushions',15,538,	'Living Room','yes','no'),
-('Leather Power Recline Loveseat','Black leather with built in storage',2,638, 'Living Room','no','no'),
-('Office Desk','Wood desk with drawers',10, 500, 'Office','yes','yes'),
-('L-Shape Desk','With 2 drawers and built in USB port',20,339, 'Office','yes','no'),
-('Upholstered Panel Headboard','Expandable from a twin to a king-size bed',10,115, 'Bedroom','yes','yes'),
-('Upholstered Standard Bed','Queen size with button tufted headboard',5,122,'Bedroom','yes','no'),
-('Olivia 3 piece Breakfast Nook Dining Set','Solid Pine wood with upholstery',2,600, 'Dining Room','yes','no'),
-('Wooden Garden Bench','Curved arms and slatted seat',10,123, 'Outdoor','yes','yes'),
-('5 Tier Shoe Rack','4 open shelves with dense steel mesh',10,109, 'Storage','yes','yes'),
-('N95 Masks','Temporary Item',0,100, 'COVID','yes','no')
+('Kellway 3 Piece Sofa','White leather, includes 2 corner wedge pieces and one armless chair',10,804,'Living Room', 'yes','no',10),
+('Olsberg Sofa','Grey upholstery with reversible seat cushions',15,538,	'Living Room','yes','no',20),
+('Leather Power Recline Loveseat','Black leather with built in storage',2,638, 'Living Room','no','no',30),
+('Office Desk','Wood desk with drawers',10, 500, 'Office','yes','yes',40),
+('L-Shape Desk','With 2 drawers and built in USB port',20,339, 'Office','yes','no',50),
+('Upholstered Panel Headboard','Expandable from a twin to a king-size bed',10,115, 'Bedroom','yes','yes',10),
+('Upholstered Standard Bed','Queen size with button tufted headboard',5,122,'Bedroom','yes','no',10),
+('Olivia 3 piece Breakfast Nook Dining Set','Solid Pine wood with upholstery',2,600, 'Dining Room','yes','no',10),
+('Wooden Garden Bench','Curved arms and slatted seat',10,123, 'Outdoor','yes','yes',30),
+('5 Tier Shoe Rack','4 open shelves with dense steel mesh',10,109, 'Storage','yes','yes',40),
+('N95 Masks','Temporary Item',0,100, 'COVID','yes','no',0)
 ;
 
 -- Orders Table

@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-//Page to add an item to the inventory
-
 export class ItemDetails extends React.Component {
     state = {
         itemName: '',
@@ -32,7 +30,8 @@ export class ItemDetails extends React.Component {
             price: this.state.price,
             itemType: this.state.itemType,
             familySafe: this.state.familySafe,
-            availableToPackage: this.state.availableToPackage
+            availableToPackage: this.state.availableToPackage,
+            timeToAssemble: this.state.timeToAssemble
         }).then(
             res => {
                 console.log(res);

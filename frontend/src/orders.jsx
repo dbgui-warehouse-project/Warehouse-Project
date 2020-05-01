@@ -4,11 +4,8 @@ import axios from 'axios';
 
 import { GeneralTable } from './generalTable.jsx';
 
-//Displays the most recent orders and customer information
-//Allows user to view order details
-
 export class Orders extends React.Component {
-
+  //should start with values of what is currently in the table
   state = {
     orderID: ""
   };
@@ -44,16 +41,18 @@ export class Orders extends React.Component {
       res => {
         const details = res.data;
         console.log(details.data);
-        this.setState({ details: details.data })
+        if(details.data.length>0)
+        {this.setState({ details: details.data })
+        this.getCustomerDetails()
+        }
       });
-    this.getCustomerDetails()
     this.setState({ display: "yes" })
   }
 
   getCustomerDetails() {
     axios.get('http://localhost:8000/customer', {
       params: {
-        customerID: this.state.values[this.state.orderID - 1].customerID
+        customerID: this.state.values[this.state.values.length-this.state.orderID].customerID
       }
     }
     ).then(
@@ -79,7 +78,7 @@ export class Orders extends React.Component {
           showRowHeader={true}
         />
 
-        <label for="orderID">Order ID</label>
+        <label for="orderID">Order ID:</label>
         <div className="row">
           <div className="form-group col-9">
             <input type="text"

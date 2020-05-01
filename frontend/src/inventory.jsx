@@ -60,6 +60,7 @@ export class Inventory extends React.Component {
         this.setState({ values: values.data })
       });
   }
+
   familySafe() {
     axios.get('http://localhost:8000/familySafe', {
       params: {
@@ -87,6 +88,7 @@ export class Inventory extends React.Component {
         this.setState({ values: values.data })
       });
   }
+
   priceasc() {
     axios.get('http://localhost:8000/priceasc', {
       params: {
@@ -100,6 +102,7 @@ export class Inventory extends React.Component {
         this.setState({ values: values.data })
       });
   }
+
   pricedesc() {
     axios.get('http://localhost:8000/pricedesc', {
       params: {
@@ -113,6 +116,7 @@ export class Inventory extends React.Component {
         this.setState({ values: values.data })
       });
   }
+
   restock() {
     axios.get('http://localhost:8000/restock', {
       params: {

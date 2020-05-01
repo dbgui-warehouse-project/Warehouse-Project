@@ -3,11 +3,8 @@ import ReactDOM from "react-dom";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-//Form to update item details
-
 export class UpdateItem extends React.Component {
 
-  //Only Update Description, Price, and Quantity in Stock
   state = {
     itemID: '',
     itemName: '',
@@ -50,13 +47,16 @@ export class UpdateItem extends React.Component {
       res => {
         const values = res.data;
         console.log(values.data);
-        this.setState({ values: values.data })
-        this.setState({ itemName: values.data[0].itemName })
-        this.setState({ itemDescription: values.data[0].itemDescription })
-        this.setState({ numInStock: values.data[0].numInStock })
-        this.setState({ price: values.data[0].price })
-        this.setState({ familySafe: values.data[0].familySafe })
-        this.setState({ availableToPackage: values.data[0].availableToPackage })
+        if(values.data.length > 0)
+        {
+          this.setState({ values: values.data })
+          this.setState({ itemName: values.data[0].itemName })
+          this.setState({ itemDescription: values.data[0].itemDescription })
+          this.setState({ numInStock: values.data[0].numInStock })
+          this.setState({ price: values.data[0].price })
+          this.setState({ familySafe: values.data[0].familySafe })
+          this.setState({ availableToPackage: values.data[0].availableToPackage })
+        }
       });
   }
 
